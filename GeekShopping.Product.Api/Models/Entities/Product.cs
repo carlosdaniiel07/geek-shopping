@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekShopping.Product.Api.Models.Entities
@@ -12,9 +13,10 @@ namespace GeekShopping.Product.Api.Models.Entities
         public string Name { get; set; }
 
         [Column("price")]
+        [Precision(19, 2)]
         public decimal Price { get; set; }
 
-        [Column("description ")]
+        [Column("description")]
         [StringLength(500)]
         public string Description { get; set; }
 
