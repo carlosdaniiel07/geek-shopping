@@ -23,6 +23,14 @@ namespace GeekShopping.Product.Api.Repository
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<ProductEntity>> GetAllByIdAsync(IEnumerable<Guid> ids)
+        {
+            return await _dbSet
+                .AsNoTracking()
+                .Where(product => ids.Contains(product.Id))
+                .ToListAsync();
+        }
+
         public async Task<ProductEntity> GetByIdAsync(Guid id)
         {
             return await _dbSet

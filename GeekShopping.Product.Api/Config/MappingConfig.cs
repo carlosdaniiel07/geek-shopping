@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GeekShopping.Product.Api.Data.ValueObjects;
+using GrpcProductModel = GeekShopping.Shared.Protos.Product;
 using ProductEntity = GeekShopping.Product.Api.Models.Entities.Product;
 
 namespace GeekShopping.Product.Api.Config
@@ -12,6 +13,7 @@ namespace GeekShopping.Product.Api.Config
             {
                 config.CreateMap<ProductEntity, ProductVO>()
                     .ReverseMap();
+                config.CreateMap<ProductEntity, GrpcProductModel>();
             });
         }
     }

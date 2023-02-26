@@ -1,4 +1,5 @@
 using GeekShopping.Product.Api.Config;
+using GeekShopping.Product.Api.Grpc;
 using GeekShopping.Product.Api.Models.Context;
 using GeekShopping.Product.Api.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddGrpc();
 
 var app = builder.Build();
 
@@ -36,5 +38,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGrpcService<ProductGrpcService>();
 
 app.Run();
