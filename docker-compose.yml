@@ -1,0 +1,57 @@
+version: '3'
+services:
+  product-api:
+    image: geek-shopping/product/api:latest
+    container_name: geek-shopping-product-api
+    build:
+      context: .
+      dockerfile: ./GeekShopping.Product.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:5000
+      DEFAULT_PORT: 5000
+      GRPC_PORT: 6000
+    expose:
+      - 5000
+      - 6000
+    ports:
+      - 5000:5000
+      - 6000:6000
+    restart: on-failure
+    depends_on:
+      - mysql
+      - rabbitmq
+  order-api:
+    image: geek-shopping/order/api:latest
+    container_name: geek-shopping-order-api
+    build:
+      context: .
+      dockerfile: ./GeekShopping.Order.Api/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_URLS: http://+:5001
+    expose:
+      - 5001
+    ports:
+      - 5001:5001
+    restart: on-failure
+    depends_on:
+      - mysql
+      - rabbitmq
+  mysql:
+    image: mysql:8.0
+    container_name: geek-shopping-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    expose:
+      - 3306
+    ports:
+      - 3306:3306
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: geek-shopping-rabbitmq
+    expose:
+      - 5672
+    ports:
+      - 15672:15672
+      - 5672:5672

@@ -2,9 +2,23 @@ using GeekShopping.Product.Api.Config;
 using GeekShopping.Product.Api.Grpc;
 using GeekShopping.Product.Api.Models.Context;
 using GeekShopping.Product.Api.Repository;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var isDockerEnvironment = builder.Environment.EnvironmentName == "Docker"; 
+
+if (isDockerEnvironment)
+{
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ListenAnyIP(builder.Configuration.GetValue<int>("DEFAULT_PORT"));
+        options.ListenAnyIP(builder.Configuration.GetValue<int>("GRPC_PORT"), listenOptions =>
+        {
+            listenOptions.Protocols = HttpProtocols.Http2;
+        });
+    });
+}
 
 // Add services to the container.
 builder.Services.AddDbContext<MySqlContext>(options =>

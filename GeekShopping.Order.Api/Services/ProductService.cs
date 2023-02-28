@@ -18,8 +18,11 @@ namespace GeekShopping.Order.Api.Services
         public async Task<IEnumerable<ProductModel>> GetAllByIdAsync(IEnumerable<Guid> ids)
         {
             var products = new List<ProductModel>();
-            var grpcAddress = _configuration.GetSection("ServicesUrl").GetValue<string>("ProductService");
-            var channel = GrpcChannel.ForAddress(grpcAddress);
+            var grpcAddress = _configuration.GetSection("GrpcServicesUrl").GetValue<string>("ProductService");
+            var channel = GrpcChannel.ForAddress(grpcAddress, new GrpcChannelOptions
+            {
+                Credentials = ChannelCredentials.Insecure,
+            });
             var client = new ProductGrpcService.ProductServiceClient(channel);
             var request = new GetAllProductsByIdRequest();
 
