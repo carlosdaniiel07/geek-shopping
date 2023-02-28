@@ -5,6 +5,6 @@ namespace GeekShopping.Coupon.Api.Services
     public interface ICouponService
     {
         Task<CouponEntity> GetByCodeAsync(string code);
-        Task<bool> CheckAsync(string code);
+        Task<CouponEntity> CheckAsync(string code);
     }
 }

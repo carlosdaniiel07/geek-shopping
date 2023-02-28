@@ -30,10 +30,14 @@ namespace GeekShopping.Coupon.Api.Controllers
         }
 
         [HttpGet("check")]
-        public async Task<IActionResult> Check([FromQuery] string code)
+        public async Task<ActionResult<GetCouponDto>> Check([FromQuery] string code)
         {
-            var isValid = await _couponService.CheckAsync(code);
-            return isValid ? Ok() : BadRequest();
+            var coupon = await _couponService.CheckAsync(code);
+
+            if (coupon == null)
+                return BadRequest();
+
+            return Ok(_mapper.Map<GetCouponDto>(coupon));
         }
     }
 }

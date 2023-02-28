@@ -17,16 +17,16 @@ namespace GeekShopping.Coupon.Api.Services
             return await _couponRepository.GetByCodeAsync(code);
         }
 
-        public async Task<bool> CheckAsync(string code)
+        public async Task<CouponEntity> CheckAsync(string code)
         {
             var coupon = await _couponRepository.GetByCodeAsync(code);
 
             if (coupon == null)
-                return false;
+                return null;
 
             var isExpired = coupon.ExpiresAt.HasValue && DateTime.UtcNow.Date > coupon.ExpiresAt.Value.Date;
 
-            return !isExpired;
+            return isExpired ? null : coupon;
         }
     }
 }
