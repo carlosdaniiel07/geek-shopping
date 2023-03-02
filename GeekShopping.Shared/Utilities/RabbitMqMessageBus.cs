@@ -47,9 +47,8 @@ namespace GeekShopping.Shared.Utilities
                 Uri = new Uri(_connectionString),
             };
 
-            using var connection = factory.CreateConnection();
-            using var channel = connection.CreateModel();
-
+            var connection = factory.CreateConnection();
+            var channel = connection.CreateModel();
             var consumer = new EventingBasicConsumer(channel);
 
             consumer.Received += async (ch, ea) =>
@@ -73,6 +72,7 @@ namespace GeekShopping.Shared.Utilities
             };
 
             channel.BasicConsume(queue, false, consumer);
+            Console.ReadLine();
         }
     }
 }
