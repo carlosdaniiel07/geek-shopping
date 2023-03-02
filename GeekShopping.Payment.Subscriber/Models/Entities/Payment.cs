@@ -22,7 +22,7 @@ namespace GeekShopping.Payment.Subscriber.Models.Entities
 
         [Column("checkout_url")]
         [Required]
-        [MaxLength(300)]
+        [MaxLength(600)]
         public string CheckoutUrl { get; set; }
 
         [Column("checkout_external_id")]
