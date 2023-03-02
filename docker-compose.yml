@@ -38,6 +38,18 @@ services:
     depends_on:
       - mysql
       - rabbitmq
+  payment-subscriber:
+    image: geek-shopping/payment/subscriber:latest
+    container_name: geek-shopping-payment-subscriber
+    build:
+      context: .
+      dockerfile: ./GeekShopping.Payment.Subscriber/Dockerfile
+    environment:
+      DOTNET_ENVIRONMENT: Docker
+    restart: on-failure
+    depends_on:
+      - mysql
+      - rabbitmq
   mysql:
     image: mysql:8.0
     container_name: geek-shopping-mysql
