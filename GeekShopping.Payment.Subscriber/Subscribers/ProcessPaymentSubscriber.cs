@@ -15,13 +15,13 @@ namespace GeekShopping.Payment.Subscriber.Subscribers
             _serviceProvider = serviceProvider;
             _messageBus = messageBus;
             _logger = logger;
+
+            _logger.LogInformation("[ProcessPaymentSubscriber] listening queue");
+            _messageBus.Subscribe<OrderCreatedEvent>("process_payment", ProcessAsync);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _messageBus.Subscribe<OrderCreatedEvent>("process_payment", ProcessAsync);
-            _logger.LogInformation("[ProcessPaymentSubscriber] listening queue");
-
             await Task.CompletedTask;
         }
 
