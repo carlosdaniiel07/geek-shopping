@@ -72,7 +72,6 @@ namespace GeekShopping.Shared.Utilities
             };
 
             channel.BasicConsume(queue, false, consumer);
-            Console.ReadLine();
         }
     }
 }
