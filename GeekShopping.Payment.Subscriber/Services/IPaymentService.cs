@@ -5,5 +5,6 @@ namespace GeekShopping.Payment.Subscriber.Services
     public interface IPaymentService
     {
         Task ProcessAsync(OrderCreatedEvent orderCreatedEvent);
+        Task UpdatePaymentAsync(CheckoutChangedEvent checkoutChangedEvent);
     }
 }

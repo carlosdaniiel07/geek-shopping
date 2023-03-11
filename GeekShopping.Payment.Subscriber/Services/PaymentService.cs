@@ -40,5 +40,30 @@ namespace GeekShopping.Payment.Subscriber.Services
 
             _logger.LogInformation("[PaymentService] finished processing order ID {orderId}", orderCreatedEvent.Id);
         }
+
+        public async Task UpdatePaymentAsync(CheckoutChangedEvent checkoutChangedEvent)
+        {
+            var paymentEntity = await _paymentRepository.GetByCheckoutExternalIdAsync(checkoutChangedEvent.CheckoutExternalId);
+
+            if (paymentEntity == null)
+                return;
+
+            var order = await _paymentGatewayService.GetOrderByIdAsync(checkoutChangedEvent.CheckoutExternalId);
+
+            if (!order.IsPaid)
+                return;
+
+            var payment = await _paymentGatewayService.GetPaymentByIdAsync(checkoutChangedEvent.PaymentExternalId);
+            var isCompleted = payment.IsPaid && payment.AmountReceived == paymentEntity.TotalValue;
+
+            if (!isCompleted)
+                return;
+
+            paymentEntity.PaymentExternalId = checkoutChangedEvent.PaymentExternalId;
+            paymentEntity.Fee = payment.Fee;
+            paymentEntity.Status = PaymentStatus.Completed;
+
+            await _paymentRepository.UpdateAsync(paymentEntity);
+        }
     }
 }

@@ -27,6 +27,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         
         services.AddHostedService<ProcessPaymentSubscriber>();
+        services.AddHostedService<UpdatePaymentSubscriber>();
     })
     .Build();
 

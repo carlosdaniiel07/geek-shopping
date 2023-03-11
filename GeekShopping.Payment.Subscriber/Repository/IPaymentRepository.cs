@@ -4,6 +4,6 @@ namespace GeekShopping.Payment.Subscriber.Repository
 {
     public interface IPaymentRepository : IBaseRepository<PaymentEntity>
     {
-
+        Task<PaymentEntity> GetByCheckoutExternalIdAsync(string checkoutExternalId);
     }
 }

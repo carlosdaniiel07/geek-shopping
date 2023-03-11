@@ -41,5 +41,30 @@ namespace GeekShopping.Payment.Subscriber.Services
 
             return new CreateOrderResponse(session.Id, session.Url, "Stripe");
         }
+
+        public async Task<OrderResponse> GetOrderByIdAsync(string id)
+        {
+            var sessionService = new SessionService();
+            var session = await sessionService.GetAsync(id);
+
+            return new OrderResponse
+            {
+                PaymentExternalId = session.PaymentIntentId,
+                PaymentStatus = session.PaymentStatus,
+            };
+        }
+
+        public async Task<PaymentResponse> GetPaymentByIdAsync(string id)
+        {
+            var paymentIntentService = new PaymentIntentService();
+            var paymentIntent = await paymentIntentService.GetAsync(id);
+
+            return new PaymentResponse
+            {
+                AmountReceived = (decimal)paymentIntent.AmountReceived / 100,
+                Fee = (decimal)paymentIntent.ApplicationFeeAmount.GetValueOrDefault() / 100,
+                Status = paymentIntent.Status,
+            };
+        }
     }
 }
